@@ -4,9 +4,11 @@ This is a awesome Terraform provider for VirtualBox. Is written in `Go` and you 
 
 ## Configure the development environment
 
+### Go and Hashicorp libraries
+
 1- You need `go` up and running. Follow this [tutorial](https://golang.org/doc/install). **Important: documentation talks about go 1.8, but go 1.9 is better - TRUST ME**. 
 
-2- You need to define `GOPATH` and `GOBIN` env vars. I use `$HOME/go` for `GOPATH` and `$HOME/work/bin` for `GOBIN`, but we are living in a free country and you can choose any folder you want to use. Usually a simple `export GOPATH=$HOME/go` and `export GOBIN=$HOME/work/bin` at your `.bashrc` file solves this, but if you uses something more exoteric than `bash` ask Google to help you. DuckDuckGo and Bing are options also. Don't forget to add `GOBIN` path to you `PATH` (`export PATH=$PATH:$GOBIN`). 
+2- You need to define `GOPATH` and `GOBIN` env vars. I use `$HOME/go` for `GOPATH` and `$HOME/work/bin` for `GOBIN`, but we are living in a free country and you can choose any folder you want to use. Usually a simple `export GOPATH=$HOME/go` and `export GOBIN=$HOME/work/bin` at your `.bashrc` file solves this, but if you uses something more exoteric than `bash` ask Google to help you. DuckDuckGo and Bing are options also. Don't forget to add `GOBIN` path to you path (`export PATH=$PATH:$GOBIN`). 
 
 3- Did I talked about clone this repo? You know how to do it, right? One point, this should be inside the `GOPATH/src` folder. 
 
@@ -19,16 +21,8 @@ $ go install github.com/hashicorp/terraform
 $ go install github.com/terraform-providers/terraform-provider-template
 ```
 
-5- Now run the old-but-amazing `make` to check if everything is on the right place. 
 
-```
-$ make
-rm -f terraform-provider-vbox
-cd /home/marcelo/go/src/vbox-provider; \
-GOOS=linux GOARCH=amd64 go build -ldflags "-X main.VERSION=0.0.1" -o terraform-provider-vbox .
-```
-
-## Managing dependencies
+### Managing dependencies
 
 The [Terraform guide for plugins](https://www.terraform.io/docs/plugins/provider.html) says "Note that some packages from the Terraform repository are used as library dependencies by providers, such as github.com/hashicorp/terraform/helper/schema; it is recommended to use [govendor](https://github.com/kardianos/govendor) to create a local vendor copy of the relevant packages in the provider repository, as can be seen in the repositories within the terraform-providers GitHub organization". 
 
@@ -48,6 +42,22 @@ To vendorize all dependencies in a **vendor** folder just run:
 
 ```
 $ govendor add +external
+```
+
+I removed the *vendor* folder from this repository, so you need to run 
+
+```
+$ govendor init
+$ govendor add +external
+```
+
+Now run the old-but-amazing `make` to check if everything is on the right place. 
+
+```
+$ make
+rm -f terraform-provider-vbox
+cd /home/marcelo/go/src/vbox-provider; \
+GOOS=linux GOARCH=amd64 go build -ldflags "-X main.VERSION=0.0.1" -o terraform-provider-vbox .
 ```
 
 ## Check if VirtualBox is up and running
