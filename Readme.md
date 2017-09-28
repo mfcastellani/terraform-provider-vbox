@@ -153,3 +153,10 @@ The CRUD operations in more detail, along with their contracts:
 
 * Update disk don't work due some issues on `$ vboxmanage closemedium disk awesome_disk.vdi --delete` command. I don't care about it since this is not the scope of this POC.
 
+## Some links
+
+* [AWS Terraform Provider](https://github.com/terraform-providers/terraform-provider-aws)
+* [Terraform documentation about Provider Plugins](https://www.terraform.io/docs/plugins/provider.html)
+* [Terraform Schema Helper](https://godoc.org/github.com/hashicorp/terraform/helper/schema)
+* [A Comprehensive Guide to Terraform](https://blog.gruntwork.io/a-comprehensive-guide-to-terraform-b3d32832baca)
+* [Terraform repository at Github](https://github.com/hashicorp/terraform)
