@@ -12,7 +12,23 @@ func resourceVboxInstance() *schema.Resource {
 		Delete: resourceVboxInstanceDelete,
 		Exists: resourceVboxInstanceExists,
 
-		Schema: map[string]*schema.Schema{},
+		Schema: map[string]*schema.Schema{
+			"name": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Virtual Machine Name",
+			},
+			"diskname": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Disk Name",
+			},
+			"osname": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Operational System Name",
+			},
+		},
 	}
 }
 

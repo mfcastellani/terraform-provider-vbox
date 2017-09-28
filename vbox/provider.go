@@ -27,7 +27,9 @@ func Provider() terraform.ResourceProvider {
 
 		// ResourceMap is the list of the resources
 		// managed by your provider.
-		ResourcesMap: map[string]*schema.Resource{},
+		ResourcesMap: map[string]*schema.Resource{
+			"vbox_disk": resourceVboxDisk(),
+		},
 
 		// ConfigureFunc is the function which, among
 		// other things, instantiates and configures
@@ -38,9 +40,11 @@ func Provider() terraform.ResourceProvider {
 }
 
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
+	// Just read the values and dispose
 	user := d.Get("user").(string)
 	token := d.Get("token").(string)
 	_ = user
 	_ = token
+
 	return nil, nil
 }

@@ -60,17 +60,14 @@ cd /home/marcelo/go/src/vbox-provider; \
 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.VERSION=0.0.1" -o terraform-provider-vbox .
 ```
 
-## Check if VirtualBox is up and running
+### Check if VirtualBox is up and running
 
-A VirtualBox or VB is a software virtualization package that installs on an operating system as an application. VirtualBox allows additional operating systems to be installed on it, as a Guest OS, and run in a virtual environment. This will be used to create resources with our Terraform Provider. To do the magic we will use the awesome tool called `vboxmanage`. Check if is available at your environment using:
+A VirtualBox or VB is a software virtualization package that installs on an operating system as an application. VirtualBox allows additional operating systems to be installed on it, as a Guest OS, and run in a virtual environment. This will be used to create resources with our Terraform Provider. To do the magic we will use the awesome tool called `vboxmanage`, but I'll not explain how to install VirtualBox here. Just Google it (or DuckDuckGo, or Bing, you choose). Check if `vboxmanage` is available at your environment using:
 
 ```
 $ vboxmanage --version
 5.0.40_Ubuntur115130
 ```
-
-I'll not explain how to install VirtualBox here. Just Google it (or DuckDuckGo, or Bing, you choose).
-
 
 ## Writing the Provider
 
@@ -122,5 +119,29 @@ Schema: map[string]*schema.Schema{
 },
 ```
 
-### The Resource 
+### The Resources 
+
+I created two resources for this POC, one called `vbox_disk` and another called `vbox_instance`. The idea is create a disk to allocate space, and create a machine and attach the disk. I'll not start the machine or install any OS, just provide infrastructure.
+
+The `vbox_disk` have two attributes: **size** and **name**. Both are required by `vboxmanage` command to create a basic disk and register at VirtualBox, **size** is specified in MB (1024 means 1GB) and **name** will be the file name for .vdi file and is required by the instance.
+
+The `vbox_instance` have three attributes: **name**, **diskname** and **osname**. You can define any name to the instance, for example *banana*. To **diskname** you should use the same disk name used at disk creation and **osname** must be a valid VirtualBox os name, like *Ubuntu* or *ArchLinux* or any listed with the command `vboxmanage list ostypes`.
+
+Resources are described using the [schema.Resource](https://godoc.org/github.com/hashicorp/terraform/helper/schema#Resource) structure. This structure has the following fields:
+
+* Schema - The configuration schema for this resource. Schemas are covered in more detail below.
+* Create, Read, Update, and Delete - These are the callback functions that implement CRUD operations for the resource. The only optional field is Update. If your resource doesn't support update, then you may keep that field nil.
+* Importer - If this is non-nil, then this resource is importable. It is recommended to implement this.  
+
+The CRUD operations in more detail, along with their contracts:
+
+**Create** - This is called to create a new instance of the resource. Terraform guarantees that an existing ID is not set on the resource data. That is, you're working with a new resource. Therefore, you are responsible for calling SetId on your schema.ResourceData using a value suitable for your resource. This ensures whatever resource state you set on schema.ResourceData will be persisted in local state. If you neglect to SetId, no resource state will be persisted.
+
+**Read** - This is called to resync the local state with the remote state. Terraform guarantees that an existing ID will be set. This ID should be used to look up the resource. Any remote data should be updated into the local data. No changes to the remote resource are to be made.
+
+**Update** - This is called to update properties of an existing resource. Terraform guarantees that an existing ID will be set. Additionally, the only changed attributes are guaranteed to be those that support update, as specified by the schema. Be careful to read about partial states below.
+
+**Delete** - This is called to delete the resource. Terraform guarantees an existing ID will be set.
+
+**Exists** - This is called to verify a resource still exists. It is called prior to Read, and lowers the burden of Read to be able to assume the resource exists. If the resource is no longer present in remote state, calling SetId with an empty string will signal its removal.
 
