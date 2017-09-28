@@ -85,5 +85,16 @@ func resourceVboxDiskRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceVboxDiskDelete(d *schema.ResourceData, meta interface{}) error {
+	var diskName string
+	if v, ok := d.GetOk("name"); ok {
+		diskName = v.(string)
+	}
+
+	var err error
+	localDiskName := strings.Join([]string{diskName, ".vdi"}, "")
+	cmd := exec.Command("vboxmanage", "closemedium", "disk", localDiskName, "--delete")
+	if err = cmd.Run(); err != nil {
+		return err
+	}
 	return nil
 }

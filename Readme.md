@@ -55,9 +55,11 @@ Now run the old-but-amazing `make` to check if everything is on the right place.
 
 ```
 $ make
-rm -f terraform-provider-vbox
-cd /home/marcelo/go/src/vbox-provider; \
-GOOS=linux GOARCH=amd64 go build -ldflags "-X main.VERSION=0.0.1" -o terraform-provider-vbox .
+rm -f terraform-provider-vbox /home/marcelo/work/bin/terraform-provider-vbox
+cd /home/marcelo/go/src/terraform-vbox-provider; \
+GOOS=linux GOARCH=amd64 go build -ldflags "-X main.VERSION=0.0.1" -o /home/marcelo/work/bin/terraform-provider-vbox . ; \
+  mkdir -p ~/.terraform.d/plugins/linux_amd64 ; \
+  cp /home/marcelo/work/bin/terraform-provider-vbox ~/.terraform.d/plugins/linux_amd64/terraform-provider-vbox
 ```
 
 Makefile will compile the extension and copy to **~/.terraform.d/plugins/linux_amd64/terraform-provider-vbox**. If you uses a Mac or another kind of OS you should change your destination. 
@@ -146,4 +148,8 @@ The CRUD operations in more detail, along with their contracts:
 **Delete** - This is called to delete the resource. Terraform guarantees an existing ID will be set.
 
 **Exists** - This is called to verify a resource still exists. It is called prior to Read, and lowers the burden of Read to be able to assume the resource exists. If the resource is no longer present in remote state, calling SetId with an empty string will signal its removal.
+
+## To dos and issues
+
+* Update disk don't work due some issues on `$ vboxmanage closemedium disk awesome_disk.vdi --delete` command. I don't care about it since this is not the scope of this POC.
 

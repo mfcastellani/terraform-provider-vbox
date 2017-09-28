@@ -8,3 +8,9 @@ resource "vbox_disk" "meu_disco" {
   name = "awesome_disk"
 }
 
+resource "vbox_instance" "minha_imagem" {
+  name = "awesome_image"
+  osname = "Ubuntu"
+  diskname = "${vbox_disk.meu_disco.name}"
+}
+

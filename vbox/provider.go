@@ -28,7 +28,8 @@ func Provider() terraform.ResourceProvider {
 		// ResourceMap is the list of the resources
 		// managed by your provider.
 		ResourcesMap: map[string]*schema.Resource{
-			"vbox_disk": resourceVboxDisk(),
+			"vbox_disk":     resourceVboxDisk(),
+			"vbox_instance": resourceVboxInstance(),
 		},
 
 		// ConfigureFunc is the function which, among
