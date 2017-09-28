@@ -60,6 +60,8 @@ cd /home/marcelo/go/src/vbox-provider; \
 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.VERSION=0.0.1" -o terraform-provider-vbox .
 ```
 
+Makefile will compile the extension and copy to **~/.terraform.d/plugins/linux_amd64/terraform-provider-vbox**. If you uses a Mac or another kind of OS you should change your destination. 
+
 ### Check if VirtualBox is up and running
 
 A VirtualBox or VB is a software virtualization package that installs on an operating system as an application. VirtualBox allows additional operating systems to be installed on it, as a Guest OS, and run in a virtual environment. This will be used to create resources with our Terraform Provider. To do the magic we will use the awesome tool called `vboxmanage`, but I'll not explain how to install VirtualBox here. Just Google it (or DuckDuckGo, or Bing, you choose). Check if `vboxmanage` is available at your environment using:
