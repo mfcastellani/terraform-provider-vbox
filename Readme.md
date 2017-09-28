@@ -149,9 +149,20 @@ The CRUD operations in more detail, along with their contracts:
 
 **Exists** - This is called to verify a resource still exists. It is called prior to Read, and lowers the burden of Read to be able to assume the resource exists. If the resource is no longer present in remote state, calling SetId with an empty string will signal its removal.
 
+## Running
+
+* `$ make`
+* `$ cd terraform-test/`
+* `$ terraform init`
+* `$ terraform plan`
+* `$ terraform apply`
+
 ## To dos and issues
 
+Since the main idea of this POC was understand how Terraform works some issues was ignored just because. Maybe you want to improve the code to understand the concepts so I list here some things to improve.
+
 * Update disk don't work due some issues on `$ vboxmanage closemedium disk awesome_disk.vdi --delete` command. I don't care about it since this is not the scope of this POC.
+* `vbox_instance` only implements create. If you try to update, delete or anything related you will get a terrible error. 
 
 ## Some links
 
